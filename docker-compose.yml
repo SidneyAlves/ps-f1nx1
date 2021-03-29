@@ -1,0 +1,14 @@
+version: "3"
+services:
+  vue-ui:
+    build:
+      context: ./vue-app
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8080:8080"
+    container_name: vue-finxi
+    volumes:
+      - ./vue-app:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
