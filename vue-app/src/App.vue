@@ -1,11 +1,17 @@
 <template>
   <sui-container>
     <sui-divider hidden />
-    <sui-header as="h1" floated="left">
-      <sui-icon name="arrow left" />
-      Click Fork to get started!!!!!!!!!!1 {{ a }}
-    </sui-header>
-
+    <sui-header as="h1" floated="left"> Click Fork to get started </sui-header>
+    <input v-model="searchTerm" type="text" />
+    <button class="button" @click="getGifs()">Search</button>
+    <div
+      v-if="gifs.length"
+      class="gif-container"
+      v-infinite-scroll="loadMore"
+      :infinite-scroll-disabled="loading"
+    >
+      <img v-for="gif in gifs" :src="gif.link" :key="gif.id" />
+    </div>
     <sui-divider hidden clearing />
     <a
       target="_blank"
@@ -29,9 +35,30 @@
 </template>
 
 <script>
+import { getTrending, getSearch } from "./services/index";
 export default {
   data: () => ({
     a: "abcdefghijklm",
+    searchTerm: "",
+    gifs: [],
+    loading: false,
+    offset: 0,
   }),
+  async created() {
+    this.gifs = await getTrending();
+  },
+  methods: {
+    loadMore: async function () {
+      this.loading = true;
+      this.offset += 10;
+      console.log("carregando", this.offset);
+      this.gifs = await getSearch(this.searchTerm, this.offset);
+      this.loading = false;
+    },
+    async getGifs() {
+      this.gifs = await getSearch(this.searchTerm);
+      console.log(this.gifs);
+    },
+  },
 };
 </script>
