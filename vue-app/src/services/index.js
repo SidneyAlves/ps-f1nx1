@@ -8,39 +8,49 @@ const api = axios.create({
   baseURL: searchEndPoint,
 });
 
-export const getTrending = async () => {
-  let { data } = await api.get(`trending?${params}`);
+// SIMULAÇÃO DA API
+// const backEnd = axios.create({
+//   baseURL: "http://localhost:5001/",
+// });
+
+export const getTrending = async (offset = 0) => {
+  let { data } = await api.get(`trending?&offset=${offset}${params}`);
   setLinks(data);
   return data.data;
 };
 
 export const getSearch = async (search, offset = 0) => {
-  // let url = `${searchEndPoint}&api_key=${apiKey}&q=${search}&limit=${limit}`;
-  // fetch(url)
-  //   .then((response) => {
-  //     return response.json();
-  //   })
-  //   .then((json) => {
-  //     console.log(json.data);
-  //     retrn response.json();
-  //   })
-  //   .then((jsonrn response.json();
-  //   })
-  //   .then((json) => {
-  //     console.log(json.data);
-  //     return json.data;
-  //   })
-  //   .catch((err) => {
-  //     con) => {
-  //     console.log(json.data);
-  //     return json.data;
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
   let { data } = await api.get(`search?&q=${search}&offset=${offset}${params}`);
   setLinks(data);
   return data.data;
+};
+
+export const saveGif = async (gif) => {
+  // let { data } = await backEnd.post("gifs", {
+  //   params: { id: gif.id, title: gif.title, url: gif.url },
+  // });
+  // return data
+  await simReq(1000);
+  // return { success: `Gif ${gif.title} salvo com sucesso` };
+  return { error: `Gif ${gif.title} não pode ser salvo` };
+};
+
+export const editGif = async (gif) => {
+  // let { data } = await backEnd.put(`gifs/${gif.id}`, {
+  //   params: { title: gif.title, url: gif.url },
+  // });
+  // return data
+  await simReq(1000);
+  // return { success: `Gif ${gif.title} salvo com sucesso` };
+  return { error: `Gif ${gif.title} não pode ser editado` };
+};
+
+export const removeGif = async (gif) => {
+  // let { data } = await backEnd.delete(`gifs/${gif.id}`);
+  // return data
+  await simReq(1000);
+  return { success: `Gif ${gif.title} removido com sucesso` };
+  // return { error: `Gif ${gif.title} não pode ser removido` };
 };
 
 const setLinks = (json) => {
@@ -48,4 +58,10 @@ const setLinks = (json) => {
     gif.link = `https://media.giphy.com/media/${gif.id}/giphy.gif`;
   });
   return gifs;
+};
+
+const simReq = (delay) => {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, delay);
+  });
 };
