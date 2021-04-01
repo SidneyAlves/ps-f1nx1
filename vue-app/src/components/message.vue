@@ -29,14 +29,14 @@ export default {
       if (this.visible) {
         setTimeout(() => {
           this.visible = !this.visible;
-        }, 5000);
+        }, 2000);
       }
     },
   },
 };
 </script>
 
-<style media="screen" scoped>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 1s;

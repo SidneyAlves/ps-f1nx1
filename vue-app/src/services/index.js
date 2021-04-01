@@ -8,7 +8,7 @@ const api = axios.create({
   baseURL: searchEndPoint,
 });
 
-// SIMULAÇÃO DA API
+// SIMULAÇÃO DA API (as funções que necessitam de back end estão com as chamadas comentadas, mockei um retorno em cada função)
 // const backEnd = axios.create({
 //   baseURL: "http://localhost:5001/",
 // });
@@ -60,6 +60,7 @@ const setLinks = (json) => {
   return gifs;
 };
 
+// Simula requisição, bom pra simular trabalho com promisse no front-end
 const simReq = (delay) => {
   return new Promise(function(resolve) {
     setTimeout(resolve, delay);

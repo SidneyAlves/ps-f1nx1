@@ -1,17 +1,16 @@
 <template>
-  <sui-container>
-    <sui-divider hidden />
-    <sui-header as="h1" floated="left"></sui-header>
+  <sui-container class="app">
     <div class="ui input input-margin">
       <input v-model="search" type="text" v-on:keyup.enter="getGifs()" />
     </div>
-    <button class="button ui primary button" @click="getGifs()">Buscar</button>
-    <div class="gif-container container">
+    <button class="button ui primary" @click="getGifs()">Buscar</button>
+    <div class="gif-container container-img">
       <img
         v-for="gif in gifs"
         :src="gif.link"
         :key="gif.id"
         @click="openGifModal(gif)"
+        class="img"
       />
     </div>
     <GifModal
@@ -23,6 +22,7 @@
       @edit-gif="editGif"
       @save-gif="saveGif"
     />
+    <Loader :loading="loading" />
   </sui-container>
 </template>
 
@@ -35,8 +35,9 @@ import {
   editGif,
 } from "./services/index";
 import GifModal from "./components/gif-modal";
+import Loader from "./components/loader";
 export default {
-  components: { GifModal },
+  components: { GifModal, Loader },
   data: () => ({
     search: "",
     gifs: [],
@@ -60,7 +61,6 @@ export default {
       if (bottomOfWindow && !this.loading) {
         this.loading = true;
         this.offset += 10;
-        console.log("aaaaaaaaaa", this.offset);
         let newGifs = [];
         if (this.isSearch) newGifs = await getSearch(this.search, this.offset);
         else newGifs = await getTrending(this.offset);
@@ -74,11 +74,11 @@ export default {
       this.offset = 0;
       this.isSearch = true;
       this.gifs = await getSearch(this.search);
+      if (!this.gifs.length) alert("Não foram encontrados gifs na busca");
     },
     openGifModal(gif) {
       this.selectedGif = gif;
       this.modal = true;
-      console.log(this.selectedGif);
     },
     closeModal() {
       this.modal = false;
@@ -102,10 +102,24 @@ export default {
 };
 </script>
 <style scoped>
+.app {
+  background-color: #051c2c;
+  width: 100% !important;
+  padding: 10px;
+  min-height: 100%;
+}
 .input-margin {
   margin-right: 10px;
 }
-.container {
+.container-img {
   margin: 10px;
+}
+.img {
+  width: 33%;
+}
+@media screen and (max-width: 768px) {
+  .img {
+    width: 100%;
+  }
 }
 </style>

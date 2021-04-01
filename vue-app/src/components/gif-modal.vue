@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <sui-modal v-model="open" class="fullscreen">
+    <sui-modal v-model="open" class="fullscreen modal-img">
       <sui-modal-header>{{gif.title}}</sui-modal-header>
       <sui-modal-content image>
         <img
@@ -63,10 +63,19 @@ export default {
       }
     },
   },
+  watch: {
+    open() {
+      if (!this.open) this.$emit("close-modal");
+    },
+  },
 };
 </script>
 
-<style lang="css">
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100&display=swap");
+.modal-img {
+  font-family: "Roboto", sans-serif;
+}
 .margin-10 {
   margin: 10px;
 }
